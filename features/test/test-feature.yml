@@ -9,7 +9,7 @@ valves:
     tags:
       size: large
       animal: cat
-    value: 100
+    value: 0
 
   - name: some.small.dogs
     tags:
