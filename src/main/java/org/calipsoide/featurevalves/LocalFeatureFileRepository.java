@@ -26,16 +26,16 @@ public class LocalFeatureFileRepository {
 
     private static final int BUFFER_SIZE = 1024 * 20; // should be enough to load config files at once
 
-    private Path base;
+    private Path path;
 
-    public LocalFeatureFileRepository(@Value("${features.git.basedir}") String base) {
-        this.base = FileSystems.getDefault().getPath(base);
+    public LocalFeatureFileRepository(@Value("${features.git.local.data}") String path) {
+        this.path = FileSystems.getDefault().getPath(path);
     }
 
     public Flux<FeatureFile> loadAll() {
         try {
             return Flux
-                    .fromIterable(Files.newDirectoryStream(base))
+                    .fromIterable(Files.newDirectoryStream(path))
                     .filter(Files::isDirectory)
                     .flatMap(path -> {
                         final String code = path.getFileName().toString();
@@ -49,7 +49,7 @@ public class LocalFeatureFileRepository {
 
     private Flux<FeatureFile> filesOf(ClientApplicationId applicationId) {
         try {
-            final Path folder = base.resolve(applicationId.toString());
+            final Path folder = path.resolve(applicationId.toString());
             final ArrayList<Path> listing = new ArrayList<>();
             Files.newDirectoryStream(folder, "*.{yml,yaml}").forEach(listing::add);
             final Flux<Path> paths = Flux.fromIterable(listing).filter(Files::isRegularFile);
