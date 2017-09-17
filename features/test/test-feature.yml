@@ -1,0 +1,19 @@
+active: true
+
+eval:
+  - name
+
+valves:
+
+  - name: all.large.cats
+    tags:
+      size: large
+      animal: cat
+    value: 100
+
+  - name: some.small.dogs
+    tags:
+      size: small
+      animal: dog
+    value: 25
+
