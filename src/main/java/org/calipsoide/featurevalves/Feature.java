@@ -1,5 +1,6 @@
 package org.calipsoide.featurevalves;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class Feature {
 
-    private String name;
+    private FeatureId id;
 
     private List<FeatureValve> valves;
 
@@ -18,15 +19,15 @@ public class Feature {
 
     private boolean active;
 
-    public Feature(String name, List<FeatureValve> valves, Evaluator evaluator, boolean active) {
-        this.name = name;
+    public Feature(FeatureId id, List<FeatureValve> valves, Evaluator evaluator, boolean active) {
+        this.id = id;
         this.valves = ImmutableList.copyOf(valves);
         this.evaluator = evaluator;
         this.active = active;
     }
 
-    public String getName() {
-        return name;
+    public FeatureId getId() {
+        return id;
     }
 
     public boolean execute(FeatureCheck check) {
@@ -50,12 +51,21 @@ public class Feature {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Feature feature = (Feature) o;
-        return Objects.equal(name, feature.name);
+        return Objects.equal(id, feature.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(name);
+        return Objects.hashCode(id);
     }
 
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("active", active)
+                .add("evaluator", evaluator)
+                .add("valves", valves)
+                .toString();
+    }
 }

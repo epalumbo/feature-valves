@@ -21,17 +21,19 @@ public class FeatureCheckController {
     private FeatureService featureService;
 
     @Autowired
-    public FeatureCheckController(CachingFeatureServiceProxy featureService) {
+    public FeatureCheckController(CachingFeatureService featureService) {
         this.featureService = featureService;
     }
 
     @PostMapping("/feature_valves/{application}/{feature}/checks")
     public Mono<ResponseEntity<FeatureCheckResponse>> check(
-            @PathVariable("application") String applicationId,
-            @PathVariable("feature") String featureId,
+            @PathVariable("application") String applicationCode,
+            @PathVariable("feature") String featureCode,
             @RequestBody FeatureCheckRequest request) {
+        final ClientApplicationId applicationId = ClientApplicationId.of(applicationCode);
+        final FeatureId id = new FeatureId(applicationId, featureCode);
         return featureService
-                .findBy(ClientApplicationId.of(applicationId), featureId)
+                .findBy(id)
                 .map(feature -> {
                     final List<Tag> tags =
                             request.getTags().entrySet().stream()

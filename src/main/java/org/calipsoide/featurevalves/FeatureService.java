@@ -7,6 +7,6 @@ import reactor.core.publisher.Mono;
  */
 public interface FeatureService {
 
-    Mono<Feature> findBy(ClientApplicationId applicationId, String name);
+    Mono<Feature> findBy(FeatureId id);
 
 }

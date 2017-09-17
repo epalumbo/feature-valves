@@ -38,4 +38,9 @@ public class Tag {
         return Objects.hashCode(code, value);
     }
 
+    @Override
+    public String toString() {
+        return code + ":" + value;
+    }
+
 }

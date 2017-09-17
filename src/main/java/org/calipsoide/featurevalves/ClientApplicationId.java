@@ -14,7 +14,7 @@ public class ClientApplicationId {
     }
 
     public static ClientApplicationId of(String name) {
-        return new ClientApplicationId(name);
+        return new ClientApplicationId(name.toLowerCase());
     }
 
     @Override

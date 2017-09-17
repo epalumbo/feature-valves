@@ -1,1 +1,12 @@
-git.repo.base.dir: /var/tmp/feature-valves
+features:
+  git:
+    basedir: /var/tmp/feature-valves
+  cache:
+    ttl: 10
+  refresh:
+    interval: 20
+
+logging:
+  level:
+    org:
+      calipsoide: DEBUG

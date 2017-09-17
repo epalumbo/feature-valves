@@ -1,6 +1,7 @@
 package org.calipsoide.featurevalves;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.MoreObjects;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,13 @@ public class HashingEvaluator implements Evaluator {
             final int hash = Math.abs(source.hashCode());
             return Optional.of(ExpositionLevel.ofPercentage(hash % 100));
         }
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("tags", tagNames)
+                .toString();
     }
 
 }

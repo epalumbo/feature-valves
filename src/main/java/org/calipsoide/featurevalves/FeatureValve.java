@@ -1,5 +1,7 @@
 package org.calipsoide.featurevalves;
 
+import com.google.common.base.MoreObjects;
+
 import java.util.List;
 
 /**
@@ -36,5 +38,13 @@ public class FeatureValve {
         return name;
     }
 
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("name", name)
+                .add("tags", tags)
+                .add("exposition", exposition)
+                .toString();
+    }
 
 }
