@@ -23,7 +23,7 @@ import static java.util.Comparator.comparing;
  * Created by epalumbo on 9/17/17.
  */
 @Repository
-public class LocalFeatureFileRepository {
+public class LocalFeatureFileRepository implements FeatureFileRepository {
 
     private static final int BUFFER_SIZE = 1024 * 20; // should be enough to load config files at once
 
@@ -33,6 +33,7 @@ public class LocalFeatureFileRepository {
         this.path = FileSystems.getDefault().getPath(path);
     }
 
+    @Override
     public Flux<FeatureFile> loadAll() {
         try {
             return Flux

@@ -19,24 +19,17 @@ public class FeatureLoader implements InitializingBean {
 
     private static final Logger logger = LoggerFactory.getLogger(FeatureLoader.class);
 
-    private GitRepoManager gitRepoManager;
-
-    private LocalFeatureFileRepository fileRepository;
-
+    private FeatureFileRepository fileRepository;
     private YamlFileFeatureFactory featureFactory;
-
     private CachingFeatureService cachingService;
-
     private Duration refresh;
 
     @Autowired
     public FeatureLoader(
-            GitRepoManager gitRepoManager,
-            LocalFeatureFileRepository fileRepository,
+            GitFeatureFileRepository fileRepository,
             YamlFileFeatureFactory featureFactory,
             CachingFeatureService cachingService,
             @Value("${features.refresh.interval}") String refresh) {
-        this.gitRepoManager = gitRepoManager;
         this.fileRepository = fileRepository;
         this.featureFactory = featureFactory;
         this.cachingService = cachingService;
@@ -50,7 +43,6 @@ public class FeatureLoader implements InitializingBean {
         Flux.concat(now, timer)
                 .flatMap(time -> {
                     logger.debug("Loading features configuration files.");
-                    gitRepoManager.update();
                     return fileRepository.loadAll();
                 })
                 .flatMap(file -> featureFactory.read(file))
