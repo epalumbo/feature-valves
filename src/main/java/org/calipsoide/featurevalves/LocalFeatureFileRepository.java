@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import static java.nio.channels.AsynchronousFileChannel.open;
 import static java.nio.charset.Charset.defaultCharset;
+import static java.util.Comparator.comparing;
 
 /**
  * Created by epalumbo on 9/17/17.
@@ -52,6 +53,7 @@ public class LocalFeatureFileRepository {
             final Path folder = path.resolve(applicationId.toString());
             final ArrayList<Path> listing = new ArrayList<>();
             Files.newDirectoryStream(folder, "*.{yml,yaml}").forEach(listing::add);
+            listing.sort(comparing(Path::getFileName));
             final Flux<Path> paths = Flux.fromIterable(listing).filter(Files::isRegularFile);
             final Flux<CharBuffer> buffers = paths.flatMap(this::read);
             final Flux<FeatureId> ids = paths.map(path -> {
