@@ -7,9 +7,9 @@ features:
       url: https://github.com/ehpalumbo/feature-valves.git
       branch: master
   cache:
-    ttl: 10
+    ttl: PT10M
   refresh:
-    interval: 20
+    interval: PT1M
 
 logging:
   level:

@@ -35,12 +35,12 @@ public class FeatureLoader implements InitializingBean {
             LocalFeatureFileRepository fileRepository,
             YamlFileFeatureFactory featureFactory,
             CachingFeatureService cachingService,
-            @Value("${features.refresh.interval}") int refresh) {
+            @Value("${features.refresh.interval}") String refresh) {
         this.gitRepoManager = gitRepoManager;
         this.fileRepository = fileRepository;
         this.featureFactory = featureFactory;
         this.cachingService = cachingService;
-        this.refresh = Duration.ofSeconds(refresh);
+        this.refresh = Duration.parse(refresh);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class FeatureLoader implements InitializingBean {
         final Flux<Long> timer = Flux.interval(refresh);
         Flux.concat(now, timer)
                 .flatMap(time -> {
-                    logger.debug("Reloading features configuration files.");
+                    logger.debug("Loading features configuration files.");
                     gitRepoManager.update();
                     return fileRepository.loadAll();
                 })

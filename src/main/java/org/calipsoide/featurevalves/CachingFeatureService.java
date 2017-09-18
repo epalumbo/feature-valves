@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.function.Consumer;
 
-import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static reactor.core.publisher.Mono.justOrEmpty;
 
 /**
@@ -23,8 +24,10 @@ public class CachingFeatureService implements FeatureService, Consumer<Feature> 
 
     private Cache<FeatureId, Feature> cache;
 
-    public CachingFeatureService(@Value("${features.cache.ttl}") int ttl) {
-        this.cache = CacheBuilder.newBuilder().expireAfterWrite(ttl, MINUTES).build();
+    public CachingFeatureService(@Value("${features.cache.ttl}") String ttl) {
+        this.cache = CacheBuilder.newBuilder()
+                .expireAfterWrite(Duration.parse(ttl).getSeconds(), SECONDS)
+                .build();
     }
 
     @Override
